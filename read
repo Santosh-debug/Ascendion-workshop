@@ -1,0 +1,38 @@
+Documentation for the Docklin LMF (Load Monitoring Function) component.
+
+This is a component for monitoring the load in a Kubernetes cluster.
+
+# ENV variables
+
+DOCKLIN_CLUSTER_CPU_THRESHOLD (default: 80): The threshold of cpu usage to accept before sending a OVERLOADED status to the registered components
+
+DOCKLIN_CLUSTER_MEM_THRESHOLD (default: 80): The threshold of memory to accept before sending a OVERLOADED status to the registered components
+
+DOCKLIN_NODE_FILTER (default: ""): Used to filter which nodes are going to be used to calculate the CPU usage. If empty is passed it will also add the master nodes to the equation.
+
+DOCKLIN_CHECK_INTERVAL (default: 60): Number of seconds between each node check and message dispatch.
+
+DOCKLIN_LOG_LEVEL (default: 1): lmf accepts 4 log levels: 0 (DEBUG) 1(INFO) 2(WARNING) 3(ERROR). The greater the number less logs are going to be shown.
+
+DOCKLIN_MPA_ENDPOINT (default: messageproducer-vbf.docklin:8088 ): Endpoint for mpa. This can either be the full kubernetes DNS or the service ip:port. It's recomended to use the ip:port whenever the LMF is being run locally.
+
+DOCKLIN_PROTECTION_SWITCH (default: off): Can configure the "overload protection" on/off switch at application start-up. And also can dynamically reconfigure the switch at application runtime. Default overload protection switch is disabled. And only this can be changed dynamically by configmap.
+
+# Running locally
+
+To run LMF locally it is required to set the MPA_ENDPOINT env variable to with the MPA service IP:GRPC_PORT
+
+`MPA_ENDPOINT=192.168.0.23:1234 ./lmf`
+
+# How the CPU and Memory is calculated
+
+- Find out all the nodes and pods' resources in cluster.
+
+- Get the both CPU and Memory usage percentage for a node or group.
+
+- Calculate the average usage of all the nodes.
+
+
+
+
+
